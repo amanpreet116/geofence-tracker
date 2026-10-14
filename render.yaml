@@ -1,0 +1,26 @@
+# Render Blueprint: Dashboard → New → Blueprint → pick this repo.
+# Replace DOCKERHUB_USER and the Vercel origin; set DATABASE_URL in the
+# dashboard when prompted (sync: false = secret, not stored in git).
+services:
+  - type: web
+    name: geofence-tracker-api
+    runtime: image
+    image:
+      url: docker.io/DOCKERHUB_USER/geofence-tracker-backend:v1.0.0
+    # Free instances spin down when idle (cold start + dropped WebSockets);
+    # use a paid instance for the demo/grading period.
+    plan: starter
+    region: oregon
+    # Exactly one instance: the WebSocket hub is in-process (see ARCHITECTURE.md).
+    numInstances: 1
+    healthCheckPath: /health
+    envVars:
+      # Neon/Supabase *direct* connection string, with ?sslmode=require.
+      - key: DATABASE_URL
+        sync: false
+      # Exact origin(s) of the frontend, comma-separated, no trailing slash.
+      - key: ALLOWED_ORIGINS
+        value: https://YOUR-APP.vercel.app
+      - key: LOG_LEVEL
+        value: info
+      # PORT is provided by Render; the server reads it.

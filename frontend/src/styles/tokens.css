@@ -1,0 +1,116 @@
+/*
+ * Design tokens: "fleet operations console".
+ * Dark is the default (:root); html.light overrides. Components use the
+ * semantic Tailwind classes mapped in index.css (bg-surface, text-muted,
+ * border-subtle, …), never raw hex. Text pairs are checked for WCAG AA by
+ * scripts/check-contrast.mjs.
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* Neutrals: base → surface → raised step up in elevation */
+  --bg: #0b0d10;
+  --surface: #12151a;
+  --raised: #181c22;
+  --hover: #1f242c;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+
+  --fg: #e7eaee;
+  --fg-muted: #a0a8b4;
+  --fg-faint: #828b98;
+
+  /* Accent: teal, for primary actions and "live" */
+  --accent: #2dd4bf;
+  --accent-hover: #5eead4;
+  --accent-fg: #042f2e;
+  --accent-soft: rgba(45, 212, 191, 0.14);
+  --accent-text: #5eead4;
+
+  /* Status */
+  --success: #34d399;
+  --success-soft: rgba(52, 211, 153, 0.14);
+  --success-border: rgba(52, 211, 153, 0.35);
+  --warning: #fbbf24;
+  --warning-soft: rgba(251, 191, 36, 0.14);
+  --warning-border: rgba(251, 191, 36, 0.35);
+  --danger: #f87171;
+  --danger-soft: rgba(248, 113, 113, 0.14);
+  --danger-border: rgba(248, 113, 113, 0.35);
+  --danger-solid: #dc2626;
+  --danger-solid-hover: #ef4444;
+  --info: #60a5fa;
+  --info-soft: rgba(96, 165, 250, 0.14);
+  --info-border: rgba(96, 165, 250, 0.35);
+
+  /* Geofence categories: stroke (map lines, swatches), fill (polygon /
+     badge background), text (labels on the fill) */
+  --cat-restricted: #f87171;
+  --cat-restricted-fill: rgba(248, 113, 113, 0.15);
+  --cat-restricted-text: #fca5a5;
+  --cat-delivery: #60a5fa;
+  --cat-delivery-fill: rgba(96, 165, 250, 0.15);
+  --cat-delivery-text: #93c5fd;
+  --cat-toll: #fbbf24;
+  --cat-toll-fill: rgba(251, 191, 36, 0.15);
+  --cat-toll-text: #fcd34d;
+  --cat-customer: #34d399;
+  --cat-customer-fill: rgba(52, 211, 153, 0.15);
+  --cat-customer-text: #6ee7b7;
+
+  --shadow-float: 0 10px 30px -8px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --overlay: rgba(0, 0, 0, 0.6);
+}
+
+:root.light {
+  color-scheme: light;
+
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --raised: #f8f9fb;
+  --hover: #eef0f3;
+  --border: rgba(15, 23, 42, 0.1);
+  --border-strong: rgba(15, 23, 42, 0.18);
+
+  --fg: #0f1419;
+  --fg-muted: #4a5361;
+  --fg-faint: #5f6875;
+
+  --accent: #0f766e;
+  --accent-hover: #115e59;
+  --accent-fg: #ffffff;
+  --accent-soft: rgba(15, 118, 110, 0.1);
+  --accent-text: #0f766e;
+
+  --success: #047857;
+  --success-soft: rgba(4, 120, 87, 0.1);
+  --success-border: rgba(4, 120, 87, 0.3);
+  --warning: #92400e;
+  --warning-soft: rgba(180, 83, 9, 0.1);
+  --warning-border: rgba(180, 83, 9, 0.3);
+  --danger: #b91c1c;
+  --danger-soft: rgba(185, 28, 28, 0.08);
+  --danger-border: rgba(185, 28, 28, 0.3);
+  --danger-solid: #b91c1c;
+  --danger-solid-hover: #991b1b;
+  --info: #1d4ed8;
+  --info-soft: rgba(29, 78, 216, 0.08);
+  --info-border: rgba(29, 78, 216, 0.3);
+
+  --cat-restricted: #dc2626;
+  --cat-restricted-fill: rgba(220, 38, 38, 0.12);
+  --cat-restricted-text: #b91c1c;
+  --cat-delivery: #2563eb;
+  --cat-delivery-fill: rgba(37, 99, 235, 0.12);
+  --cat-delivery-text: #1d4ed8;
+  --cat-toll: #d97706;
+  --cat-toll-fill: rgba(217, 119, 6, 0.14);
+  --cat-toll-text: #92400e;
+  --cat-customer: #16a34a;
+  --cat-customer-fill: rgba(22, 163, 74, 0.12);
+  --cat-customer-text: #166534;
+
+  --shadow-float: 0 10px 30px -10px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(15, 23, 42, 0.08);
+  --overlay: rgba(15, 23, 42, 0.4);
+}

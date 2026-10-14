@@ -1,0 +1,147 @@
+@import "tailwindcss";
+@import "./styles/tokens.css";
+@import "leaflet/dist/leaflet.css";
+
+/* `light:` variant for the rare theme-specific tweak (tokens cover the rest). */
+@custom-variant light (&:where(.light, .light *));
+
+/*
+ * Semantic tokens → Tailwind utilities. `inline` keeps the var() reference so
+ * classes follow the active theme: bg-surface, text-muted, border-subtle, …
+ */
+@theme inline {
+  --color-base: var(--bg);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-hover: var(--hover);
+  --color-subtle: var(--border);
+  --color-strong: var(--border-strong);
+  --color-overlay: var(--overlay);
+
+  --color-fg: var(--fg);
+  --color-muted: var(--fg-muted);
+  --color-faint: var(--fg-faint);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-success-border: var(--success-border);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-warning-border: var(--warning-border);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-border: var(--danger-border);
+  --color-danger-solid: var(--danger-solid);
+  --color-danger-solid-hover: var(--danger-solid-hover);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-info-border: var(--info-border);
+
+  --color-cat-restricted: var(--cat-restricted);
+  --color-cat-restricted-fill: var(--cat-restricted-fill);
+  --color-cat-restricted-text: var(--cat-restricted-text);
+  --color-cat-delivery: var(--cat-delivery);
+  --color-cat-delivery-fill: var(--cat-delivery-fill);
+  --color-cat-delivery-text: var(--cat-delivery-text);
+  --color-cat-toll: var(--cat-toll);
+  --color-cat-toll-fill: var(--cat-toll-fill);
+  --color-cat-toll-text: var(--cat-toll-text);
+  --color-cat-customer: var(--cat-customer);
+  --color-cat-customer-fill: var(--cat-customer-fill);
+  --color-cat-customer-text: var(--cat-customer-text);
+
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", monospace;
+
+  /* Type scale: 12 / 13 / 14 / 16 / 20 / 24 */
+  --text-xs: 12px;
+  --text-xs--line-height: 16px;
+  --text-sm: 13px;
+  --text-sm--line-height: 18px;
+  --text-base: 14px;
+  --text-base--line-height: 20px;
+  --text-lg: 16px;
+  --text-lg--line-height: 24px;
+  --text-xl: 20px;
+  --text-xl--line-height: 28px;
+  --text-2xl: 24px;
+  --text-2xl--line-height: 32px;
+
+  --radius-control: 6px;
+  --radius-card: 10px;
+  --shadow-float: var(--shadow-float);
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-base font-sans text-base text-fg antialiased;
+    font-feature-settings: "cv11", "ss01"; /* Inter: straight-sided 1, open digits */
+  }
+
+  /* One focus style everywhere: the accent ring. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+  }
+}
+
+/* Numbers in data line up. */
+@utility num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Leaflet panes sit at z-index 400+; keep app overlays (drawer, modal) above. */
+.leaflet-container {
+  @apply z-0 font-sans;
+  background: var(--bg);
+}
+
+/* Live-alert pulse on the map (see AlertPulseLayer). */
+.alert-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 3px solid var(--accent);
+  animation: alert-pulse 1.2s ease-out 3;
+  pointer-events: none;
+}
+.alert-pulse--critical {
+  border-color: var(--danger);
+}
+@keyframes alert-pulse {
+  from {
+    transform: scale(0.3);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

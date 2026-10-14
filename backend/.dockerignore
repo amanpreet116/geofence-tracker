@@ -1,0 +1,9 @@
+# Only sources are needed in the build context.
+bin/
+*.test
+*.out
+coverage*
+.git
+.env*
+Dockerfile
+.dockerignore
