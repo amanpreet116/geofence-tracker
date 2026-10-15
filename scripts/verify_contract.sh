@@ -71,6 +71,10 @@ check_error() { # name expected_status [extra jq filter]
 }
 
 now_minus() { date -u -d "@$(($(date +%s) - $1))" +%Y-%m-%dT%H:%M:%SZ; }
+# Scenario timestamps are offsets from one fixed instant, so date-window checks
+# don't depend on how long the requests in between take (slow networks).
+T0=$(date +%s)
+t0_minus() { date -u -d "@$((T0 - $1))" +%Y-%m-%dT%H:%M:%SZ; }
 
 # A small square at a random remote spot so repeated runs never overlap.
 LAT0=$(awk -v r="$RANDOM" 'BEGIN { printf "%.4f", -40 - (r % 1000) / 100 }')
@@ -186,7 +190,7 @@ fi
 # ------------------------------------------- locations: out -> in -> out ----
 
 post_location() { # lat lng seconds_ago
-  req POST /vehicles/location "{\"vehicle_id\":\"$VEH_ID\",\"latitude\":$1,\"longitude\":$2,\"timestamp\":\"$(now_minus "$3")\"}"
+  req POST /vehicles/location "{\"vehicle_id\":\"$VEH_ID\",\"latitude\":$1,\"longitude\":$2,\"timestamp\":\"$(t0_minus "$3")\"}"
 }
 
 post_location "$OUT_LAT" "$IN_LNG" 30
@@ -228,7 +232,7 @@ check "GET /violations/history item fields & types" 200 \
      and (.latitude | type == \"number\") and (.longitude | type == \"number\") and (.timestamp | test(\"Z$\"))))"
 req GET "/violations/history?vehicle_id=$VEH_ID&limit=1"
 check "GET /violations/history?limit=1 (total ignores limit)" 200 '(.violations | length == 1) and .total_count == 2'
-req GET "/violations/history?vehicle_id=$VEH_ID&start_date=$(now_minus 15)&end_date=$(now_minus 0)"
+req GET "/violations/history?vehicle_id=$VEH_ID&start_date=$(t0_minus 15)&end_date=$(t0_minus 5)"
 check "GET /violations/history start_date/end_date" 200 '(.total_count == 1) and .violations[0].event_type == "exit"'
 req GET "/violations/history?start_date=yesterday"
 check_error "GET /violations/history bad date -> 400" 400 '.details.start_date | type == "string"'
